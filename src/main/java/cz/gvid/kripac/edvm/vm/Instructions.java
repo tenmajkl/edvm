@@ -14,14 +14,20 @@ public class Instructions {
 
     private ArrayList<Instruction> instructions;
 
-    public Instructions(ArrayList<Instruction> instructions) {
+    private Integer current = 0;
+
+    private Memory memory;
+    private Registers registers;
+    private System system;
+
+    public Instructions(ArrayList<Instruction> instructions, Memory memory, Registers registers, System system) {
         this.instructions = instructions;
+        this.memory = memory;
+        this.registers = registers;
+        this.system = system;
     }
 
-    public void eval(Memory memory, Registers registers, System system) {
-        Integer current = 0;
-        while (current < this.instructions.size()) {
-            this.instructions.get(current.intValue()).eval(memory, registers, system, current);;
-        }
+    public void evalNext() {
+        this.instructions.get(current.intValue()).eval(this.memory, this.registers, this.system, this.current);
     }
 }

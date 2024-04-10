@@ -10,6 +10,14 @@ import cz.gvid.kripac.edvm.vm.contracts.System;
  */
 public class Srv implements Instruction {
 
+    private int register;
+    private int value;
+
+    public Srv(int register, int value) {
+        this.register = register;
+        this.value = value;
+    }
+
     @Override
     public void eval(Memory memory, Registers registers, System system, Integer instruction_address) {
         
