@@ -11,7 +11,6 @@ public class Srv implements InstructionParser {
     @Override
     public Instruction parse(int arguments) {
         int register = arguments >> 8;
-        int 
         return null;
     }    
 }
