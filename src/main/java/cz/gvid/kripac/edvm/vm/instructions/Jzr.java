@@ -6,17 +6,15 @@ import cz.gvid.kripac.edvm.vm.contracts.Registers;
 import cz.gvid.kripac.edvm.vm.contracts.System;
 
 /**
- * Div
+ * Jzr
  */
-public class Div implements Instruction {
-    private int xReg;
-    private int yReg;
-    private int resultReg; 
+public class Jzr implements Instruction {
+    private int register;
+    private int instruction; 
 
-    public Div(int xReg, int yReg, int resultReg) {
-        this.xReg = xReg;
-        this.yReg = yReg;
-        this.resultReg = resultReg;
+    public Jzr(int register, int instruction) {
+        this.register = register; 
+        this.instruction = instruction;
     }
 
     @Override
@@ -24,17 +22,13 @@ public class Div implements Instruction {
         // TODO Auto-generated method stub
         
     }
-
-    public int getxReg() {
-        return xReg;
+    
+    public int getRegister() {
+        return register;
     }
 
-    public int getyReg() {
-        return yReg;
-    }
-
-    public int getResultReg() {
-        return resultReg;
+    public int getInstruction() {
+        return instruction;
     }
 
 }

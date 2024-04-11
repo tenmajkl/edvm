@@ -34,7 +34,7 @@ Aplikace bude rozdělena na tři části -- VM, jazyk symbolických instrukcí a
 | 0110 | not           | register (4 b)                          | nenulovou hodnotu v registru nahradí za nulovou a vice versa                                                              |
 | 0111 | and           | register1 register2 register3(vše 6 b)  | vloží hodnotu 1 do registru 3 v případě, že je v obou registrech nenulová hodnota, jinak vloží nulu                       |
 | 1000 | jmp           | position (6 b)                          | skočí na danou instrukci                                                                                                  |
-| 1001 | jrz           | register (4 b) position (6 b)           | skočí na danou instrukci pouze tehdy, pokud je v daném registru hodnota 0                                                 |
+| 1001 | jzr           | register (4 b) position (6 b)           | skočí na danou instrukci pouze tehdy, pokud je v daném registru hodnota 0                                                 |
 | 1010 | set           | position (8 b) register (4 b)           | Vloží hodnotu z registru na danou pozici na paměťové pásce                                                                |
 | 1011 | get           | position (8 b) register (4 b)           | Vloží hodnotu z dané pozice na pásce do daného registru                                                                   |
 | 1100 | sys           | register1 register2 register3 (vše 4 b) | zavolá syscall jehož id je v registru 1 s hodnotou z registru 2 a výsledek vloží do registru 3                            |

@@ -1,6 +1,6 @@
 package cz.gvid.kripac.edvm.vm;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import cz.gvid.kripac.edvm.vm.contracts.Instruction;
 import cz.gvid.kripac.edvm.vm.contracts.Memory;
@@ -8,11 +8,11 @@ import cz.gvid.kripac.edvm.vm.contracts.Registers;
 import cz.gvid.kripac.edvm.vm.contracts.System;
 
 /**
- * Instructions
+ * InstructionEvaluator
  */
-public class Instructions {
+public class InstructionEvaluator {
 
-    private ArrayList<Instruction> instructions;
+    private List<Instruction> instructions;
 
     private Integer current = 0;
 
@@ -20,7 +20,7 @@ public class Instructions {
     private Registers registers;
     private System system;
 
-    public Instructions(ArrayList<Instruction> instructions, Memory memory, Registers registers, System system) {
+    public InstructionEvaluator(List<Instruction> instructions, Memory memory, Registers registers, System system) {
         this.instructions = instructions;
         this.memory = memory;
         this.registers = registers;

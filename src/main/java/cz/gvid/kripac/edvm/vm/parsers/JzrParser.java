@@ -5,15 +5,15 @@ import java.util.Arrays;
 import cz.gvid.kripac.edvm.vm.ArgumentParser;
 import cz.gvid.kripac.edvm.vm.contracts.Instruction;
 import cz.gvid.kripac.edvm.vm.contracts.InstructionParser;
-import cz.gvid.kripac.edvm.vm.instructions.Sys;
+import cz.gvid.kripac.edvm.vm.instructions.Jzr;
 
 /**
- * SysParser
+ * JzrParser
  */
-public class SysParser implements InstructionParser {
+public class JzrParser implements InstructionParser {
     @Override
     public Instruction parse(int arguments) {
-        var args = ArgumentParser.parse(Arrays.asList(4, 4, 4), arguments);
-        return new Sys(args.get(0), args.get(1), args.get(2));
-    }  
+        var args = ArgumentParser.parse(Arrays.asList(4, 6), arguments);
+        return new Jzr(args.get(0), args.get(1));
+    } 
 }

@@ -20,6 +20,15 @@ public class Srv implements Instruction {
 
     @Override
     public void eval(Memory memory, Registers registers, System system, Integer instruction_address) {
-        
+        registers.put(register, value);
     } 
+
+    public int getValue() {
+        return value;
+    }
+
+    public int getRegister() {
+        return register;
+    }
+
 }

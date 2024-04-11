@@ -25,4 +25,12 @@ public class ArgumentParserTest {
                 ArgumentParser.parse(Arrays.asList(5), 0b001000000000)
         );
     }
+
+    @Test
+    void parsingZeros() {
+        assertEquals(
+                Arrays.asList(0, 8), 
+                ArgumentParser.parse(Arrays.asList(4, 8), 0b000000001000)
+        );
+    }
 }
