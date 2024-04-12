@@ -23,7 +23,10 @@ public class Sys implements Instruction {
 
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
-        
+        registers.put(
+                outputReg, 
+                system.call(id, registers.get(inputReg))
+        );
     }
 
     public int getId() {

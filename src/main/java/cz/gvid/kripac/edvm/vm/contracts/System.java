@@ -6,7 +6,5 @@ import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
  * System
  */
 public interface System {
-    public int out(char value) throws VMRuntimeException;
-
-    public int in() throws VMRuntimeException;
+    public int call(int id, int in) throws VMRuntimeException;
 }
