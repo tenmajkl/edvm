@@ -25,7 +25,7 @@ public class Sub implements Instruction {
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         registers.put(
                resultReg,
-               memory.get(registers.get(xReg)) - memory.get(registers.get(yReg))
+               registers.get(xReg) - registers.get(yReg)
         ); 
     }
 

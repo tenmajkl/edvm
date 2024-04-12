@@ -36,7 +36,7 @@ public class Parser {
      * @param code integer instructions 
      * @return object instructions
     */
-    public List<Instruction> parse(ArrayList<Integer> code) throws InstructionException {
+    public List<Instruction> parse(List<Integer> code) throws InstructionException {
          var instructions = new ArrayList<Instruction>();
          int counter = 0;
          for (int instruction : code) {

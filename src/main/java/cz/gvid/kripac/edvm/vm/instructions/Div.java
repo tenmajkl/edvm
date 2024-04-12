@@ -23,10 +23,14 @@ public class Div implements Instruction {
 
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
-        registers.put(
-               resultReg,
-               memory.get(registers.get(xReg)) / memory.get(registers.get(yReg))
-        ); 
+        try {
+            registers.put(
+                   resultReg,
+                   registers.get(xReg) / registers.get(yReg)
+            );
+        } catch (ArithmeticException e) {
+            throw new VMRuntimeException(e.getMessage());
+        }
     }
 
     public int getxReg() {

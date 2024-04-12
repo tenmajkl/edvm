@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import cz.gvid.kripac.edvm.vm.exception.InstructionException;
 import cz.gvid.kripac.edvm.vm.instructions.Equ;
+import cz.gvid.kripac.edvm.vm.machine.MachineRegisters;
 import cz.gvid.kripac.edvm.vm.parsers.EquParser;
 
 /**
@@ -23,6 +24,22 @@ public class EquTest {
             assertEquals(7, ((Equ) equ).getxReg());
             assertEquals(13, ((Equ) equ).getyReg());
             assertEquals(12, ((Equ) equ).getResultReg());
+        });
+    }
+
+    @Test
+    public void executing() {
+        assertDoesNotThrow(() -> {
+            var registers = new MachineRegisters();
+            registers.put(1, 1);
+            registers.put(2, 1);
+            var equ = new Equ(1, 2, 3);
+            equ.eval(null, registers, null, null);
+            assertEquals(1, registers.get(3));
+
+            registers.put(2, 37);
+            equ.eval(null, registers, null, null);
+            assertEquals(0, registers.get(3));
         });
     }
 }

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import cz.gvid.kripac.edvm.vm.exception.InstructionException;
 import cz.gvid.kripac.edvm.vm.instructions.Get;
+import cz.gvid.kripac.edvm.vm.machine.MachineMemory;
+import cz.gvid.kripac.edvm.vm.machine.MachineRegisters;
 import cz.gvid.kripac.edvm.vm.parsers.GetParser;
 
 /**
@@ -22,6 +24,22 @@ public class GetTest {
             assertTrue(get instanceof Get);
             assertEquals(138, ((Get) get).getAddress());
             assertEquals(0, ((Get) get).getRegister());
+        });
+    }
+
+    @Test
+    public void executing() {
+        assertDoesNotThrow(() -> {
+            var registers = new MachineRegisters();
+            var memory = new MachineMemory();
+            memory.put(0, 255);
+            var get = new Get(0, 0);
+            get.eval(memory, registers, null, null);
+            assertEquals(255, registers.get(0));
+
+            get = new Get(1, 0);
+            get.eval(memory, registers, null, null);
+            assertEquals(0, registers.get(0));
         });
     }
 }

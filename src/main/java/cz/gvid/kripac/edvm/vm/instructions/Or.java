@@ -25,7 +25,7 @@ public class Or implements Instruction {
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         registers.put(
                resultReg,
-               (memory.get(registers.get(xReg)) != 0) || (memory.get(registers.get(yReg)) != 0) 
+               (registers.get(xReg) != 0 || registers.get(yReg) != 0) 
                ? 1 
                : 0
         ); 
