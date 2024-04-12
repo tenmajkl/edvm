@@ -30,5 +30,10 @@ public class InstructionEvaluator {
 
     public void evalNext() throws VMRuntimeException {
         this.instructions.get(pointer.getPointer()).eval(this.memory, this.registers, this.system, pointer);
+        this.pointer.next();
+    }
+
+    public boolean canEvalNext() {
+        return pointer.canGoNext();
     }
 }

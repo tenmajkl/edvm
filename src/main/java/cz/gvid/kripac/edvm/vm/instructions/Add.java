@@ -21,7 +21,7 @@ public class Add implements Instruction {
     }
 
     @Override
-    public void eval(Memory memory, Registers registers, System system, Integer instruction_address) throws VMRuntimeException {
+    public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         registers.put(
                resultReg,
                memory.get(registers.get(xReg)) + memory.get(registers.get(yReg))
