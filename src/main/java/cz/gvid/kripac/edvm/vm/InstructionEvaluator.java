@@ -6,6 +6,7 @@ import cz.gvid.kripac.edvm.vm.contracts.Instruction;
 import cz.gvid.kripac.edvm.vm.contracts.Memory;
 import cz.gvid.kripac.edvm.vm.contracts.Registers;
 import cz.gvid.kripac.edvm.vm.contracts.System;
+import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 
 /**
  * InstructionEvaluator
@@ -14,7 +15,7 @@ public class InstructionEvaluator {
 
     private List<Instruction> instructions;
 
-    private Integer current = 0;
+    private InstructionPointer pointer;
 
     private Memory memory;
     private Registers registers;
@@ -27,7 +28,7 @@ public class InstructionEvaluator {
         this.system = system;
     }
 
-    public void evalNext() {
-        this.instructions.get(current.intValue()).eval(this.memory, this.registers, this.system, this.current);
+    public void evalNext() throws VMRuntimeException {
+        this.instructions.get(pointer.getPointer()).eval(this.memory, this.registers, this.system, pointer);
     }
 }

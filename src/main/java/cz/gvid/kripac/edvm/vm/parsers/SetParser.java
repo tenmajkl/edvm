@@ -5,6 +5,7 @@ import java.util.Arrays;
 import cz.gvid.kripac.edvm.vm.ArgumentParser;
 import cz.gvid.kripac.edvm.vm.contracts.Instruction;
 import cz.gvid.kripac.edvm.vm.contracts.InstructionParser;
+import cz.gvid.kripac.edvm.vm.exception.InstructionException;
 import cz.gvid.kripac.edvm.vm.instructions.Set;
 
 /**
@@ -12,7 +13,7 @@ import cz.gvid.kripac.edvm.vm.instructions.Set;
  */
 public class SetParser implements InstructionParser {
     @Override
-    public Instruction parse(int arguments) {
+    public Instruction parse(int arguments) throws InstructionException {
         var args = ArgumentParser.parse(Arrays.asList(8, 4), arguments);
         return new Set(args.get(0), args.get(1));
     }

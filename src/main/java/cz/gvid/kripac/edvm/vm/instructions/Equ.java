@@ -4,6 +4,7 @@ import cz.gvid.kripac.edvm.vm.contracts.Instruction;
 import cz.gvid.kripac.edvm.vm.contracts.Memory;
 import cz.gvid.kripac.edvm.vm.contracts.Registers;
 import cz.gvid.kripac.edvm.vm.contracts.System;
+import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 
 /**
  * Equ
@@ -20,9 +21,13 @@ public class Equ implements Instruction {
     }
 
     @Override
-    public void eval(Memory memory, Registers registers, System system, Integer instruction_address) {
-        // TODO Auto-generated method stub
-        
+    public void eval(Memory memory, Registers registers, System system, Integer instruction_address) throws VMRuntimeException {
+        registers.put(
+               resultReg,
+               memory.get(registers.get(xReg)) == memory.get(registers.get(yReg))
+               ? 1
+               : 0
+        ); 
     }
 
     public int getxReg() {

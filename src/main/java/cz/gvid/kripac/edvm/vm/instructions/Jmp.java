@@ -17,8 +17,6 @@ public class Jmp implements Instruction{
 
     @Override
     public void eval(Memory memory, Registers registers, System system, Integer instruction_address) {
-        // TODO Auto-generated method stub
-        
     }
     
     public int getInstruction() {

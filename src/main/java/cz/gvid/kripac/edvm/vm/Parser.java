@@ -5,6 +5,7 @@ import java.util.List;
 
 import cz.gvid.kripac.edvm.vm.contracts.Instruction;
 import cz.gvid.kripac.edvm.vm.contracts.InstructionParser;
+import cz.gvid.kripac.edvm.vm.exception.InstructionException;
 import cz.gvid.kripac.edvm.vm.parsers.*;
 
 /**
@@ -18,6 +19,12 @@ public class Parser {
      */
     public static final int ArgumentMask = 0b0000111111111111;
 
+    /**
+     * Maximum size of instruction.
+     * Since every instruction is represented as 16b integer, max numeric value it can have is 2^16
+     */
+    public static final int MaxInstructionValue = 65536; // == 2^16
+
     private ArrayList<InstructionParser> parsers = new ArrayList<InstructionParser>();
 
     public Parser() {
@@ -29,12 +36,19 @@ public class Parser {
      * @param code integer instructions 
      * @return object instructions
     */
-    public List<Instruction> parse(ArrayList<Integer> code) {
+    public List<Instruction> parse(ArrayList<Integer> code) throws InstructionException {
          var instructions = new ArrayList<Instruction>();
+         int counter = 0;
          for (int instruction : code) {
+            // This check would not be nescessary when the input was from binary file, 
+            // but if someone uses it directly its important.
+            if (instruction > MaxInstructionValue) {
+                throw new InstructionException("Instruction " + counter + " is too long, maximal allowed size is 16 bits");
+            }
             int id = instruction >> 12;
             int arguments = instruction & ArgumentMask;
             instructions.add(this.parsers.get(id).parse(arguments));
+            counter++;
          }
 
          return instructions;

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import cz.gvid.kripac.edvm.vm.ArgumentParser;
 import cz.gvid.kripac.edvm.vm.contracts.Instruction;
 import cz.gvid.kripac.edvm.vm.contracts.InstructionParser;
+import cz.gvid.kripac.edvm.vm.exception.InstructionException;
 import cz.gvid.kripac.edvm.vm.instructions.Not;
 
 /**
@@ -12,7 +13,7 @@ import cz.gvid.kripac.edvm.vm.instructions.Not;
  */
 public class NotParser implements InstructionParser {
     @Override
-    public Instruction parse(int arguments) {
+    public Instruction parse(int arguments) throws InstructionException {
         var args = ArgumentParser.parse(Arrays.asList(4), arguments);
         return new Not(args.get(0));
     }
