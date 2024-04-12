@@ -21,6 +21,9 @@ public class Sys implements Instruction {
         this.outputReg = outputReg;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         registers.put(

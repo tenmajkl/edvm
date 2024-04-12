@@ -26,13 +26,22 @@ public class InstructionEvaluator {
         this.memory = memory;
         this.registers = registers;
         this.system = system;
+        this.pointer = new InstructionPointer(instructions.size());
     }
 
+    /**
+     * Goes to next instruction and evaluates it.
+     *
+     * @throws VMRuntimeException
+     */
     public void evalNext() throws VMRuntimeException {
-        this.instructions.get(pointer.getPointer()).eval(this.memory, this.registers, this.system, pointer);
         this.pointer.next();
+        this.instructions.get(pointer.getPointer()).eval(this.memory, this.registers, this.system, pointer);
     }
 
+    /**
+     * Determines whenever there is instruction that can be evaluated.
+     */
     public boolean canEvalNext() {
         return pointer.canGoNext();
     }

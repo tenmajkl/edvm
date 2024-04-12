@@ -4,6 +4,11 @@
 
 package cz.gvid.kripac.edvm;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import cz.gvid.kripac.edvm.vm.VM;
+
 /**
  *
  * @author kripac 
@@ -11,6 +16,11 @@ package cz.gvid.kripac.edvm;
 public class Edvm {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        try (var file = new FileInputStream("test.esm")) {
+            var vm = new VM(file);
+            vm.execute();
+        } catch (IOException e) {
+            System.out.println("Error while openning input file!");
+        }
     }
 }

@@ -21,6 +21,9 @@ public class Div implements Instruction {
         this.resultReg = resultReg;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         try {

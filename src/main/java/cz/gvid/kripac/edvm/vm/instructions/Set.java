@@ -19,6 +19,9 @@ public class Set implements Instruction {
         this.register = register;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
        memory.put(address, registers.get(register));

@@ -4,12 +4,15 @@ import cz.gvid.kripac.edvm.vm.contracts.Registers;
 import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 
 /**
- * MachineRegisters
+ * Register implementation for standalone VM
  */
 public class MachineRegisters implements Registers {
 
     private int[] registers = new int[16];
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int get(int address) throws VMRuntimeException {
         if (address > 16) {
@@ -18,7 +21,10 @@ public class MachineRegisters implements Registers {
 
         return registers[address];
     }
-   
+  
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Registers put(int address, int value) throws VMRuntimeException {
         if (address > 16) {

@@ -9,6 +9,9 @@ import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
  * MachineSystem
  */
 public class MachineSystem implements System {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int call(int id, int in) throws VMRuntimeException {
         // TODO remove switch

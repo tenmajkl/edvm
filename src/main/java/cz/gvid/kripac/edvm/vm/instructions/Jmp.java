@@ -17,6 +17,9 @@ public class Jmp implements Instruction{
         this.instruction = instruction;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         pointer.setPointer(instruction == 255 ? 255 : instruction- 1); // has to be -1 because when we go to next instruction, it increments it by 1 

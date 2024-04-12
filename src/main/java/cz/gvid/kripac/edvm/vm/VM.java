@@ -25,6 +25,10 @@ public class VM {
         this.stream = stream;
     }
 
+    /**
+     * Executes virtual machine
+     * @return void
+     */
     public void execute() {
         try {
             InstructionEvaluator instructions = new InstructionEvaluator(

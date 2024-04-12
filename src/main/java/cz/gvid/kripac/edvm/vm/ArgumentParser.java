@@ -10,6 +10,14 @@ import cz.gvid.kripac.edvm.vm.exception.InstructionException;
  */
 public class ArgumentParser {
 
+    /**
+     * Parses arguments in 12b integer into list of integers using given template. 
+     *
+     * @param arguments Template for parsing, each item is bit size of the argument.
+     * @param target Number containing arguments.
+     * @return Parsed arguments
+     * @throws InstructionException When template requires more bits than is in arguments.
+    */
     public static List<Integer> parse(List<Integer> arguments, int target) throws InstructionException {
         var result = new ArrayList<Integer>();
         int input_size = 12; // expecting that input is 12 bits by default

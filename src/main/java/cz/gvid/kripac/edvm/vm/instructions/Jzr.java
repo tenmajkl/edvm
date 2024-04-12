@@ -19,6 +19,9 @@ public class Jzr implements Instruction {
         this.instruction = instruction;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         if (registers.get(register) != 0) {

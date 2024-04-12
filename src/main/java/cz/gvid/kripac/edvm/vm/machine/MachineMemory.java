@@ -4,12 +4,15 @@ import cz.gvid.kripac.edvm.vm.contracts.Memory;
 import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 
 /**
- * Memory
+ * Memory implementation for standalone VM.
  */
 public class MachineMemory implements Memory {
 
     private int[] tape = new int[256];
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int get(int address) throws VMRuntimeException {
         if (address > 255) {
@@ -18,6 +21,9 @@ public class MachineMemory implements Memory {
         return tape[address];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Memory put(int address, int value) throws VMRuntimeException {
         if (address > 255) {

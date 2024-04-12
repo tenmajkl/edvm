@@ -54,11 +54,18 @@ public class Parser {
          return instructions;
     }
 
+    /**
+     * Adds instruction parser.
+     * Private syntactic sugar, I want limited number of instructions.
+     */
     private Parser addParser(int id, InstructionParser parser) {
         this.parsers.add(id, parser);
         return this;
     }
 
+    /**
+     * Initializes default parsers.
+     */
     private void initDefaultParsers() {
         this.addParser(0b0000, new SrvParser())
             .addParser(0b0001, new AddParser())
