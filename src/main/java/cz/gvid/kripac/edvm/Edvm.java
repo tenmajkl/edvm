@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import cz.gvid.kripac.edvm.vm.VM;
+import java.util.Scanner;
 
 /**
  *
@@ -16,7 +17,9 @@ import cz.gvid.kripac.edvm.vm.VM;
 public class Edvm {
 
     public static void main(String[] args) {
-        try (var file = new FileInputStream("test.esm")) {
+        var sc = new Scanner(System.in);
+        var name = sc.next();
+        try (var file = new FileInputStream(name)) {
             var vm = new VM(file);
             vm.execute();
         } catch (IOException e) {
