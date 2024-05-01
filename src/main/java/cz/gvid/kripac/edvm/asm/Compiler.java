@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import cz.gvid.kripac.edvm.asm.arguments.Address;
@@ -12,37 +15,40 @@ import cz.gvid.kripac.edvm.asm.contracts.Argument;
 import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
 
 public class Compiler {
-    private HashMap<String, List<Argument>> instructions = new HashMap<String, List<Argument>>();
+    private HashMap<String, Entry<Integer, List<Argument>>> instructions = new HashMap<String, Entry<Integer, List<Argument>>>();
     private Addresses addresses = new Addresses();
     private int line = 0;
     private ArrayList<Integer> result = new ArrayList<Integer>();
 
     public Compiler() {
-        instructions.put("srv", Arrays.asList(new Numeric(4), new Numeric(8)));
-        instructions.put("add", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("sub", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("mul", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("div", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("or", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("not", Arrays.asList(new Numeric(4)));
-        instructions.put("and", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("jmp", Arrays.asList(new Address()));
-        instructions.put("jzr", Arrays.asList(new Numeric(4), new Address()));
-        instructions.put("set", Arrays.asList(new Numeric(8), new Numeric(4)));
-        instructions.put("get", Arrays.asList(new Numeric(8), new Numeric(4)));
-        instructions.put("sys", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("equ", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("gt", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        instructions.put("st", Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("srv", 0, Arrays.asList(new Numeric(4), new Numeric(8)));
+        this.addInstruction("add", 1, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("sub", 2, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("mul", 3, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("div", 4, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("or",  5, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("not", 6, Arrays.asList(new Numeric(4)));
+        this.addInstruction("and", 7, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("jmp", 8, Arrays.asList(new Address()));
+        this.addInstruction("jzr", 9, Arrays.asList(new Numeric(4), new Address()));
+        this.addInstruction("set", 10, Arrays.asList(new Numeric(8), new Numeric(4)));
+        this.addInstruction("get", 11, Arrays.asList(new Numeric(8), new Numeric(4)));
+        this.addInstruction("sys", 12, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("equ", 13, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("gt",  14, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("st",  15, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+    }
 
+    private void addInstruction(String name, int id, List<Argument> arguments) {
+        instructions.put(name, new SimpleEntry<Integer, List<Argument>>(id, arguments));
     }
 
     /**
-     * Tries to compile line with address
+     * Tries to compile line with address tag
      * @param line
      * @return
      */
-    public boolean compileAddress(String line) {
+    public boolean compileTag(String line) {
         var pattern = Pattern.compile("^\\s*([a-zA-Z0-9]+):\\s*$");
         var matcher = pattern.matcher(line);
         if (!matcher.find()) {
@@ -59,20 +65,46 @@ public class Compiler {
      * @param line
      * @throws AssemblerInstructionException
      */
-    public void compileInstruction(String line) throws AssemblerInstructionException {
+    public boolean compileInstruction(String line) throws AssemblerInstructionException {
         var tokens = line.split("\\s+");
-        List<Argument> args;
-        if ((args = this.instructions.get(tokens[0])) == null) {
+        Entry<Integer, List<Argument>> instruction;
+        if ((instruction = this.instructions.get(tokens[0])) == null) {
             throw new AssemblerInstructionException("Unknown instruction " + tokens[0]);
         }
 
+        var args = instruction.getValue();
+
         var result = new ArrayList<Integer>();
+
+        var pattern = new ArrayList<Integer>();
 
         for (int index = 0; index < args.size(); index++) {
             result.add(
                     args.get(index).compile(tokens[index + 1], this.addresses)
             );
+            pattern.add(args.get(index).getSize());
         }
+
+        this.result.add(BytecodeGenerator.convert(instruction.getKey(), result, pattern));
+
+        return true;
+    }
+
+    public boolean compileLine(String line) throws AssemblerInstructionException {
+        try {
+            return this.compileTag(line) || this.compileInstruction(line); 
+        } catch (AssemblerInstructionException e) {
+            throw e.setLine(this.line); // ensure that the exception contains current line of source code
+        }
+    }
+
+    public ArrayList<Integer> compile(Scanner input) throws AssemblerInstructionException {
+        while (input.hasNext()) {
+            this.compileLine(input.nextLine());
+            line++;
+        }
+
+        return this.result;
     }
 
 

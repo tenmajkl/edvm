@@ -13,4 +13,9 @@ public class Address implements Argument {
 
         return addresses.getAddress(input);
     }
+
+    @Override
+    public int getSize() {
+        return 8;
+    }
 }

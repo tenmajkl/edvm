@@ -24,4 +24,9 @@ public class Numeric implements Argument {
             throw new AssemblerInstructionException("Unexpected token " + input + " expected integer");
         }
     }
+
+    @Override
+    public int getSize() {
+        return size;
+    }
 }

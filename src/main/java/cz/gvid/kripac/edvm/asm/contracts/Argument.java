@@ -11,4 +11,6 @@ public interface Argument {
      * @throws AssemblerInstructionException when given token doesnt match argument rules
      */
     public int compile(String input, Addresses addresses) throws AssemblerInstructionException;
+
+    public int getSize();
 }
