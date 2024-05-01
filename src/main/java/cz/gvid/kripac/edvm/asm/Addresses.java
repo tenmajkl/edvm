@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class Addresses {
 
-    private HashMap<String, Integer> addresses;
+    private HashMap<String, Integer> addresses = new HashMap<String, Integer>();
 
     public int getAddress(String tag) {
         return this.addresses.get(tag);
