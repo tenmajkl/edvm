@@ -49,7 +49,7 @@ public class Compiler {
      * @return
      */
     public boolean compileTag(String line) {
-        var pattern = Pattern.compile("^\\s*([a-zA-Z0-9]+):\\s*$");
+        var pattern = Pattern.compile("^\\s*([a-zA-Z0-9_]+):\\s*$");
         var matcher = pattern.matcher(line);
         if (!matcher.find()) {
             return false;
@@ -68,6 +68,10 @@ public class Compiler {
     public boolean compileInstruction(String line) throws AssemblerInstructionException {
         var tokens = line.split("\\s+");
         Entry<Integer, List<Argument>> instruction;
+        if (Pattern.matches("^\\s+$", line)) {
+            return true;
+        }
+
         if ((instruction = this.instructions.get(tokens[0])) == null) {
             throw new AssemblerInstructionException("Unknown instruction " + tokens[0]);
         }
@@ -78,11 +82,16 @@ public class Compiler {
 
         var pattern = new ArrayList<Integer>();
 
-        for (int index = 0; index < args.size(); index++) {
-            result.add(
-                    args.get(index).compile(tokens[index + 1], this.addresses)
-            );
-            pattern.add(args.get(index).getSize());
+        int index = 0;
+        try {
+            for (; index < args.size(); index++) {
+                result.add(
+                        args.get(index).compile(tokens[index + 1], this.addresses)
+                );
+                pattern.add(args.get(index).getSize());
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new AssemblerInstructionException("Missing argument " + index);
         }
 
         this.result.add(BytecodeGenerator.convert(instruction.getKey(), result, pattern));
@@ -98,8 +107,8 @@ public class Compiler {
         }
     }
 
-    public ArrayList<Integer> compile(Scanner input) throws AssemblerInstructionException {
-        while (input.hasNext()) {
+    public List<Integer> compile(Scanner input) throws AssemblerInstructionException {
+        while (input.hasNextLine()) {
             this.compileLine(input.nextLine());
             line++;
         }

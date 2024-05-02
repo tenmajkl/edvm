@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import cz.gvid.kripac.edvm.asm.Addresses;
 import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
 
-class AdressTest {
+public class AddressTest {
     @Test
     public void compiling() {
         assertDoesNotThrow(() -> {
