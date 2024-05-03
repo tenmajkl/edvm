@@ -16,13 +16,17 @@ import cz.gvid.kripac.edvm.vm.machine.MachineSystem;
  */
 public class VM {
 
-    private InputStream stream;
+    private List<Integer> instructions;
     private MachineMemory memory = new MachineMemory();
     private MachineRegisters registers = new MachineRegisters();
     private MachineSystem system = new MachineSystem();
 
-    public VM(InputStream stream) {
-        this.stream = stream;
+    public VM(InputStream stream) throws InstructionException {
+        this.instructions = new Lexer().lex(stream);
+    }
+
+    public VM(List<Integer> instructions) {
+        this.instructions = instructions;
     }
 
     /**
@@ -32,7 +36,7 @@ public class VM {
     public void execute() {
         try {
             InstructionEvaluator instructions = new InstructionEvaluator(
-                    new Parser().parse(new Lexer().lex(stream)),
+                    new Parser().parse(this.instructions),
                     memory,
                     registers, 
                     system

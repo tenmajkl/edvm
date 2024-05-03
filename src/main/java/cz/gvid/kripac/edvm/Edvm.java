@@ -4,11 +4,21 @@
 
 package cz.gvid.kripac.edvm;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import cz.gvid.kripac.edvm.vm.VM;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
+
+import cz.gvid.kripac.edvm.asm.Compiler;
+import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
+import cz.gvid.kripac.edvm.vm.InstructionEvaluator;
+import cz.gvid.kripac.edvm.vm.Parser;
+import cz.gvid.kripac.edvm.vm.VM;
+import cz.gvid.kripac.edvm.vm.exception.InstructionException;
+import cz.gvid.kripac.edvm.vm.machine.MachineMemory;
+import cz.gvid.kripac.edvm.vm.machine.MachineRegisters;
+import cz.gvid.kripac.edvm.vm.machine.MachineSystem;
+
+//import cz.gvid.kripac.edvm.ui.UI;
 
 /**
  *
@@ -17,13 +27,18 @@ import java.util.Scanner;
 public class Edvm {
 
     public static void main(String[] args) {
-        var sc = new Scanner(System.in);
-        var name = sc.next();
-        try (var file = new FileInputStream(name)) {
-            var vm = new VM(file);
-            vm.execute();
-        } catch (IOException e) {
-            System.out.println("Error while openning input file!");
+        //java.awt.EventQueue.invokeLater(() -> {
+        //    new UI().setVisible(true);
+        //});
+
+        try (var input = new Scanner(new FileReader("test_2.esm"))) {
+            var compiler = new Compiler();
+            var instructions = compiler.compile(input);
+            new VM(instructions).execute();
+        } catch (FileNotFoundException e) {
+
+        } catch (AssemblerInstructionException e) {
+
         }
     }
 }

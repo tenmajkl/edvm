@@ -46,6 +46,12 @@ public class AddTest {
             add = new Add(1, 4, 3);
             add.eval(null, registers, null, null);
             assertEquals(1, registers.get(3));
+
+            add = new Add(1, 2, 1);
+            registers.put(1, 1);
+            registers.put(2, 1);
+            add.eval(null, registers, null, null);
+            assertEquals(2, registers.get(1));
         });
     }
 }

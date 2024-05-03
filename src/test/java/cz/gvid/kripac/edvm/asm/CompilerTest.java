@@ -59,7 +59,7 @@ public class CompilerTest {
             var comp = new Compiler();
             assertEquals(Arrays.asList(
                 0b0000000001100001,
-                0b1100000000000010,
+                0b1100000100000010,
                 0b1000000000010000
                 ), comp.compile(stream));
             stream.close();

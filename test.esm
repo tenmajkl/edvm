@@ -1,4 +1,4 @@
 srv 0 97
 loop:
-sys 0 0 2
+sys 1 0 2
 jmp loop
