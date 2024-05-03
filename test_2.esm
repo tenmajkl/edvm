@@ -1,9 +1,16 @@
-srv 0 97
-srv 2 123
-srv 1 1
-srv 3 0
+srv 0 42
+srv 1 10
+srv 2 0
+srv 3 6
+srv 4 1
+srv 5 1
 loop:
-sys 1 0 4
-add 0 1 0
-equ 0 2 3
-jzr 3 loop
+sys 1 0 8
+add 2 5 2
+equ 2 4 6
+jzr 6 loop
+sys 1 1 8
+srv 2 0
+add 4 5 4
+equ 4 3 7
+jzr 7 loop
