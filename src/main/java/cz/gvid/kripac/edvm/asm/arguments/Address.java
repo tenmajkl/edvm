@@ -5,6 +5,9 @@ import cz.gvid.kripac.edvm.asm.contracts.Argument;
 import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
 
 public class Address implements Argument {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int compile(String input, Addresses addresses) throws AssemblerInstructionException {
         if (!addresses.hasAddress(input)) {
@@ -14,6 +17,9 @@ public class Address implements Argument {
         return addresses.getAddress(input);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getSize() {
         return 8;

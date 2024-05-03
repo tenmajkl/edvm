@@ -12,5 +12,9 @@ public interface Argument {
      */
     public int compile(String input, Addresses addresses) throws AssemblerInstructionException;
 
+    /**
+     * Returns bit size of the argument 
+     * @return bit size of the argument 
+     */
     public int getSize();
 }

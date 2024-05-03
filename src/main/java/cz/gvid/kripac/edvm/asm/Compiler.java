@@ -14,39 +14,65 @@ import cz.gvid.kripac.edvm.asm.arguments.Numeric;
 import cz.gvid.kripac.edvm.asm.contracts.Argument;
 import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
 
+/**
+ * Compiles assembler into list of binary instructions stored as integers.
+ * Output of this compiler can be used directly inside {@link cz.gvid.kripac.edvm.vm.Parser}
+ */
 public class Compiler {
+
+    /**
+     * Contains compilers for all instructions
+     */
     private HashMap<String, Entry<Integer, List<Argument>>> instructions = new HashMap<String, Entry<Integer, List<Argument>>>();
+
+    /**
+     * Contains all tags and its addresses
+     */
     private Addresses addresses = new Addresses();
+    /**
+     * Current line number.
+     * Mainly for exceptions
+     */
     private int line = 0;
+
+    /**
+     * Compiled instructions
+     */
     private ArrayList<Integer> result = new ArrayList<Integer>();
 
     public Compiler() {
-        this.addInstruction("srv", 0, Arrays.asList(new Numeric(4), new Numeric(8)));
-        this.addInstruction("add", 1, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("sub", 2, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("mul", 3, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("div", 4, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("or",  5, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("not", 6, Arrays.asList(new Numeric(4)));
-        this.addInstruction("and", 7, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("jmp", 8, Arrays.asList(new Address()));
-        this.addInstruction("jzr", 9, Arrays.asList(new Numeric(4), new Address()));
-        this.addInstruction("set", 10, Arrays.asList(new Numeric(8), new Numeric(4)));
-        this.addInstruction("get", 11, Arrays.asList(new Numeric(8), new Numeric(4)));
-        this.addInstruction("sys", 12, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("equ", 13, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("gt",  14, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
-        this.addInstruction("st",  15, Arrays.asList(new Numeric(4), new Numeric(4), new Numeric(4)));
+        this.addInstruction("srv", 0, new Numeric(4), new Numeric(8));
+        this.addInstruction("add", 1, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("sub", 2, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("mul", 3, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("div", 4, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("or",  5, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("not", 6, new Numeric(4));
+        this.addInstruction("and", 7, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("jmp", 8, new Address());
+        this.addInstruction("jzr", 9, new Numeric(4), new Address());
+        this.addInstruction("set", 10, new Numeric(8), new Numeric(4));
+        this.addInstruction("get", 11, new Numeric(8), new Numeric(4));
+        this.addInstruction("sys", 12, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("equ", 13, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("gt",  14, new Numeric(4), new Numeric(4), new Numeric(4));
+        this.addInstruction("st",  15, new Numeric(4), new Numeric(4), new Numeric(4));
     }
 
-    private void addInstruction(String name, int id, List<Argument> arguments) {
-        instructions.put(name, new SimpleEntry<Integer, List<Argument>>(id, arguments));
+    /**
+     * Adds instruction compiler.
+     * @param name
+     * @param id numeric representation in edvm
+     * @param arguments argument signature
+     */
+    private void addInstruction(String name, int id, Argument... arguments) {
+        instructions.put(name, new SimpleEntry<Integer, List<Argument>>(id, Arrays.asList(arguments)));
     }
 
     /**
      * Tries to compile line with address tag
-     * @param line
-     * @return
+     * @param line input
+     * @return true if it was compiled (used for easy compiler chaining)
      */
     public boolean compileTag(String line) {
         var pattern = Pattern.compile("^\\s*([a-zA-Z0-9_]+):\\s*$");
@@ -62,8 +88,10 @@ public class Compiler {
     }
 
     /**
-     * @param line
-     * @throws AssemblerInstructionException
+     * Compiles line with instruction.
+     * @param line input
+     * @throws AssemblerInstructionException if the instruction doesn't exist or there is an error with arguments
+     * @return true if it was compiled (used for easy compiler chaining)
      */
     public boolean compileInstruction(String line) throws AssemblerInstructionException {
         var tokens = line.split("\\s+");
@@ -99,6 +127,12 @@ public class Compiler {
         return true;
     }
 
+    /** 
+     * Compiles line of code using compiler chaining.
+     * @param line
+     * @return true if it was compiled (redundant, nescesary to hack java)
+     * @throws AssemblerInstructionException if there is any syntax error inside input line
+     */
     public boolean compileLine(String line) throws AssemblerInstructionException {
         try {
             return this.compileTag(line) || this.compileInstruction(line); 
@@ -107,6 +141,12 @@ public class Compiler {
         }
     }
 
+    /**
+     * Compiles code from given input 
+     * @param input input stream 
+     * @throws AssemblerInstructionException if there is any syntax error inside input line
+     * @return compiled list of integer instructions
+     */
     public List<Integer> compile(Scanner input) throws AssemblerInstructionException {
         while (input.hasNextLine()) {
             this.compileLine(input.nextLine());

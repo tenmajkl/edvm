@@ -12,6 +12,9 @@ public class Numeric implements Argument {
         this.size = size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int compile(String input, Addresses addresses) throws AssemblerInstructionException {
         try {
@@ -25,6 +28,9 @@ public class Numeric implements Argument {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getSize() {
         return size;

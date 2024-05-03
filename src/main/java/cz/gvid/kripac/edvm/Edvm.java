@@ -10,13 +10,7 @@ import java.util.Scanner;
 
 import cz.gvid.kripac.edvm.asm.Compiler;
 import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
-import cz.gvid.kripac.edvm.vm.InstructionEvaluator;
-import cz.gvid.kripac.edvm.vm.Parser;
 import cz.gvid.kripac.edvm.vm.VM;
-import cz.gvid.kripac.edvm.vm.exception.InstructionException;
-import cz.gvid.kripac.edvm.vm.machine.MachineMemory;
-import cz.gvid.kripac.edvm.vm.machine.MachineRegisters;
-import cz.gvid.kripac.edvm.vm.machine.MachineSystem;
 
 //import cz.gvid.kripac.edvm.ui.UI;
 
