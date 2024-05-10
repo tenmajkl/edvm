@@ -4,17 +4,23 @@
  */
 package cz.gvid.kripac.edvm.ui;
 
+import java.io.File;
+
 /**
  *
  * @author majkel
  */
 public class UI extends javax.swing.JFrame {
 
+    private FileSelector fs;
+    
     /**
      * Creates new form UI
      */
     public UI() {
         initComponents();
+        this.add(fs = new FileSelector(this));
+        this.pack();
     }
 
     /**
@@ -26,41 +32,22 @@ public class UI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("edvm");
-        setBackground(new java.awt.Color(251, 241, 199));
-
-        jPanel1.setBackground(new java.awt.Color(251, 241, 199));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 529, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 338, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        setBackground(new java.awt.Color(40, 40, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
+    public void runSimulator(File file) {
+        this.remove(fs);
+        this.add(new Simulator(file));
+        validate();
+        repaint();
+        pack();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
