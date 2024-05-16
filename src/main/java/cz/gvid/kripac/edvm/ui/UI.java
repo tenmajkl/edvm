@@ -4,6 +4,7 @@
  */
 package cz.gvid.kripac.edvm.ui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import java.io.File;
 
 /**
@@ -18,8 +19,9 @@ public class UI extends javax.swing.JFrame {
      * Creates new form UI
      */
     public UI() {
+        FlatDarkLaf.setup();
         initComponents();
-        this.add(fs = new FileSelector(this));
+        this.mainPanel.add(fs = new FileSelector(this));
         this.pack();
     }
 
@@ -32,9 +34,14 @@ public class UI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mainPanel = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("edvm");
-        setBackground(new java.awt.Color(40, 40, 40));
+        setMinimumSize(new java.awt.Dimension(800, 450));
+        setSize(new java.awt.Dimension(800, 450));
+        getContentPane().setLayout(new java.awt.GridBagLayout());
+        getContentPane().add(mainPanel, new java.awt.GridBagConstraints());
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -49,5 +56,6 @@ public class UI extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables
 }

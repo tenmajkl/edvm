@@ -33,18 +33,16 @@ public class FileSelector extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         selectFile = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(40, 40, 40));
-        setForeground(new java.awt.Color(235, 219, 178));
+        jButton1.setText("jButton1");
+
         setLayout(new java.awt.GridBagLayout());
 
-        selectFile.setBackground(new java.awt.Color(40, 40, 40));
-        selectFile.setFont(new java.awt.Font("Source Code Pro Light", 0, 13)); // NOI18N
-        selectFile.setForeground(new java.awt.Color(235, 219, 178));
+        selectFile.setFont(new java.awt.Font("Source Code Pro", 0, 13)); // NOI18N
         selectFile.setText("Select file");
         selectFile.setAlignmentY(0.0F);
-        selectFile.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(235, 219, 178)));
         selectFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         selectFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -52,7 +50,6 @@ public class FileSelector extends javax.swing.JPanel {
             }
         });
         add(selectFile, new java.awt.GridBagConstraints());
-        selectFile.getAccessibleContext().setAccessibleName("Select file");
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileActionPerformed
@@ -65,6 +62,7 @@ public class FileSelector extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton selectFile;
     // End of variables declaration//GEN-END:variables
 }

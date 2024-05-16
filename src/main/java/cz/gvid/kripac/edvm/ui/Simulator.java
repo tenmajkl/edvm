@@ -43,32 +43,18 @@ public class Simulator extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(40, 40, 40));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(146, 131, 116)));
+        setLayout(new java.awt.GridLayout());
 
-        code.setBackground(new java.awt.Color(40, 40, 40));
-        code.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        code.setBorder(null);
         code.setFont(new java.awt.Font("Source Code Pro Light", 0, 13)); // NOI18N
-        code.setForeground(new java.awt.Color(235, 219, 178));
         code.setCaretColor(new java.awt.Color(146, 131, 116));
         code.setFocusTraversalPolicyProvider(true);
+        code.setPreferredSize(new java.awt.Dimension(500, 250));
+        code.setRequestFocusEnabled(false);
         jScrollPane1.setViewportView(code);
         code.getAccessibleContext().setAccessibleName("");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(102, 102, 102)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(115, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(85, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
-        );
+        add(jScrollPane1);
     }// </editor-fold>//GEN-END:initComponents
 
 
