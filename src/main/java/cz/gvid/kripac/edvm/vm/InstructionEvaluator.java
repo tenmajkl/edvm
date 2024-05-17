@@ -45,4 +45,8 @@ public class InstructionEvaluator {
     public boolean canEvalNext() {
         return pointer.canGoNext();
     }
+    
+    public int getPointer() {
+        return pointer.getPointer();
+    }
 }

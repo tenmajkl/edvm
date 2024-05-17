@@ -43,7 +43,6 @@ public class Simulator extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(40, 40, 40));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(146, 131, 116)));
-        setLayout(new java.awt.GridLayout());
 
         code.setBorder(null);
         code.setFont(new java.awt.Font("Source Code Pro Light", 0, 13)); // NOI18N
@@ -54,7 +53,16 @@ public class Simulator extends javax.swing.JPanel {
         jScrollPane1.setViewportView(code);
         code.getAccessibleContext().setAccessibleName("");
 
-        add(jScrollPane1);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
     }// </editor-fold>//GEN-END:initComponents
 
 

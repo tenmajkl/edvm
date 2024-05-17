@@ -40,16 +40,27 @@ public class UI extends javax.swing.JFrame {
         setTitle("edvm");
         setMinimumSize(new java.awt.Dimension(800, 450));
         setSize(new java.awt.Dimension(800, 450));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-        getContentPane().add(mainPanel, new java.awt.GridBagConstraints());
+
+        mainPanel.setLayout(new java.awt.GridBagLayout());
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     public void runSimulator(File file) {
-        this.remove(fs);
-        this.add(new Simulator(file));
+        this.mainPanel.remove(fs);
+        this.mainPanel.add(new Simulator(file));
         validate();
         repaint();
         pack();
