@@ -49,4 +49,6 @@ public class InstructionEvaluator {
     public int getPointer() {
         return pointer.getPointer();
     }
+
+
 }

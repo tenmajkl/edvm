@@ -28,17 +28,17 @@ public class Compiler {
     /**
      * Contains all tags and its addresses
      */
-    private Addresses addresses = new Addresses();
+    protected Addresses addresses = new Addresses();
     /**
      * Current line number.
      * Mainly for exceptions
      */
-    private int line = 0;
+    protected int line = 0;
 
     /**
      * Compiled instructions
      */
-    private ArrayList<Integer> result = new ArrayList<Integer>();
+    protected ArrayList<Integer> result = new ArrayList<Integer>();
 
     public Compiler() {
         this.addInstruction("srv", 0, new Numeric(4), new Numeric(8));
@@ -150,11 +150,12 @@ public class Compiler {
     public List<Integer> compile(Scanner input) throws AssemblerInstructionException {
         while (input.hasNextLine()) {
             this.compileLine(input.nextLine());
-            line++;
+            this.line++;
         }
 
         return this.result;
     }
-
-
+    
+    
+    
 }
