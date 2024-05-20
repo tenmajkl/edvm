@@ -21,7 +21,7 @@ import java.util.Scanner;
  * @author majkel
  */
 public class AsmCompiler extends Compiler {
-    public Evaluator toEvaluator(InputStream input, Simulator simulator) throws AssemblerInstructionException, InstructionException  {
+    public Evaluator toEvaluator(InputStream input, Simulator simulator, SimulatorMemory memory, SimulatorRegisters registers, SimulatorSystem system) throws AssemblerInstructionException, InstructionException  {
         var scanner = new Scanner(input);
         var asm = new HashMap<Integer, String>();
         var tags = new HashMap<Integer, String>();
@@ -45,9 +45,9 @@ public class AsmCompiler extends Compiler {
                 tags,
                 new InstructionEvaluator(
                     parser.parse(this.result),
-                    new SimulatorMemory(),
-                    new SimulatorRegisters(),
-                    new SimulatorSystem(simulator.getConsole())
+                    memory,
+                    registers,
+                    system
                 ),
                 this.result,
                 simulator

@@ -5,11 +5,15 @@
 package cz.gvid.kripac.edvm.ui;
 
 import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
+import cz.gvid.kripac.edvm.ui.machine.SimulatorMemory;
+import cz.gvid.kripac.edvm.ui.machine.SimulatorRegisters;
+import cz.gvid.kripac.edvm.ui.machine.SimulatorSystem;
 import cz.gvid.kripac.edvm.vm.exception.InstructionException;
 import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -20,6 +24,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  *
@@ -30,17 +35,36 @@ public class Simulator extends javax.swing.JPanel {
     private File file;
     private Evaluator evaluator;
     
+    private ArrayList<JTextField> memoryCells = new ArrayList<JTextField>();
+    private int memoryPage = 0;
+    
+    private SimulatorMemory memory;
+    private SimulatorRegisters registers;
+    private SimulatorSystem system;
+    
     /**
      * Creates new Simulator panel
      */
     public Simulator(File input) {
         initComponents();
+        
         file = input;
+        var memoryComp = new Memory(this);
+        this.cells.add(memoryComp);
+        
+        memory = new SimulatorMemory(memoryComp);
+        registers = new SimulatorRegisters();
+        system = new SimulatorSystem(this.getConsole());
+        
         try (var in = new FileInputStream(file)){
-            evaluator = new AsmCompiler().toEvaluator(in, this);
+            evaluator = new AsmCompiler().toEvaluator(in, this, 
+                    memory,
+                    registers,
+                    system
+            );
             code.setText(evaluator.getCode(-1));
             bytecode.setText(evaluator.getByteCode(-1));
-
+            
        } catch (IOException e) {
         
         } catch (AssemblerInstructionException ex) {
@@ -62,6 +86,7 @@ public class Simulator extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         code = new javax.swing.JEditorPane();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -73,10 +98,12 @@ public class Simulator extends javax.swing.JPanel {
         jSpinner1 = new javax.swing.JSpinner();
         jScrollPane3 = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
+        cells = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(40, 40, 40));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(146, 131, 116)));
-        setLayout(new java.awt.GridLayout(1, 0, 2, 2));
+
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
         code.setBorder(null);
         code.setFont(new java.awt.Font("Source Code Pro", 0, 13)); // NOI18N
@@ -87,7 +114,7 @@ public class Simulator extends javax.swing.JPanel {
         jScrollPane1.setViewportView(code);
         code.getAccessibleContext().setAccessibleName("");
 
-        add(jScrollPane1);
+        jPanel4.add(jScrollPane1);
 
         bytecode.setBorder(null);
         bytecode.setFont(new java.awt.Font("SauceCodePro NF", 0, 13)); // NOI18N
@@ -97,7 +124,7 @@ public class Simulator extends javax.swing.JPanel {
         bytecode.setRequestFocusEnabled(false);
         jScrollPane2.setViewportView(bytecode);
 
-        add(jScrollPane2);
+        jPanel4.add(jScrollPane2);
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 10, 5));
 
@@ -137,19 +164,37 @@ public class Simulator extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
             .addComponent(jScrollPane3)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
-        add(jPanel1);
+        jPanel4.add(jPanel1);
+
+        cells.setLayout(new java.awt.GridLayout());
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(cells, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cells, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -203,15 +248,18 @@ public class Simulator extends javax.swing.JPanel {
         }, (int) jSpinner1.getValue(), (int) jSpinner1.getValue());
     }//GEN-LAST:event_jSpinner1StateChanged
 
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane bytecode;
+    private javax.swing.JPanel cells;
     private javax.swing.JEditorPane code;
     private javax.swing.JTextArea console;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -256,6 +304,18 @@ public class Simulator extends javax.swing.JPanel {
 
     public JScrollPane getjScrollPane3() {
         return jScrollPane3;
+    }
+
+    public SimulatorMemory getMemory() {
+        return memory;
+    }
+
+    public SimulatorRegisters getRegisters() {
+        return registers;
+    }
+
+    public SimulatorSystem getSystem() {
+        return system;
     }
 
 
