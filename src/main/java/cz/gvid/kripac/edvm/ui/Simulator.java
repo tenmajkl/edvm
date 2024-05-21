@@ -13,7 +13,6 @@ import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -24,7 +23,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 /**
  *
@@ -34,9 +32,6 @@ public class Simulator extends javax.swing.JPanel {
 
     private File file;
     private Evaluator evaluator;
-    
-    private ArrayList<JTextField> memoryCells = new ArrayList<JTextField>();
-    private int memoryPage = 0;
     
     private SimulatorMemory memory;
     private SimulatorRegisters registers;
@@ -50,7 +45,9 @@ public class Simulator extends javax.swing.JPanel {
         
         file = input;
         var memoryComp = new Memory(this);
-        this.cells.add(memoryComp);
+        var registerComp = new Registers(this);
+        this.memoryTape.add(memoryComp);
+        this.rightPanel.add(registerComp);
         
         memory = new SimulatorMemory(memoryComp);
         registers = new SimulatorRegisters();
@@ -65,7 +62,7 @@ public class Simulator extends javax.swing.JPanel {
             code.setText(evaluator.getCode(-1));
             bytecode.setText(evaluator.getByteCode(-1));
             
-       } catch (IOException e) {
+        } catch (IOException e) {
         
         } catch (AssemblerInstructionException ex) {
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,19 +88,19 @@ public class Simulator extends javax.swing.JPanel {
         code = new javax.swing.JEditorPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         bytecode = new javax.swing.JEditorPane();
-        jPanel1 = new javax.swing.JPanel();
+        rightPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jSpinner1 = new javax.swing.JSpinner();
         jScrollPane3 = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
-        cells = new javax.swing.JPanel();
+        memoryTape = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(40, 40, 40));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(146, 131, 116)));
 
-        jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
+        jPanel4.setLayout(new java.awt.GridLayout());
 
         code.setBorder(null);
         code.setFont(new java.awt.Font("Source Code Pro", 0, 13)); // NOI18N
@@ -160,81 +157,48 @@ public class Simulator extends javax.swing.JPanel {
         console.setRows(5);
         jScrollPane3.setViewportView(console);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
+        rightPanel.setLayout(rightPanelLayout);
+        rightPanelLayout.setHorizontalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
             .addComponent(jScrollPane3)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        rightPanelLayout.setVerticalGroup(
+            rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rightPanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(120, Short.MAX_VALUE))
         );
 
-        jPanel4.add(jPanel1);
+        jPanel4.add(rightPanel);
 
-        cells.setLayout(new java.awt.GridLayout());
+        memoryTape.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(cells, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
+            .addComponent(memoryTape, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cells, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(memoryTape, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            evaluator.next();
-        } catch (VMRuntimeException ex) {
-            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private Timer timer;
-    
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-            jButton2.setText("RUN");
-            return;
-        }
-        
-        jButton2.setText("PAUSE");
-        
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                try {
-                    evaluator.next();
-                } catch (VMRuntimeException ex) {
-                    Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }, (int) jSpinner1.getValue(), (int) jSpinner1.getValue());
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
         if (timer == null) {
             return;
         }
-        
+
         timer.cancel();
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -248,22 +212,55 @@ public class Simulator extends javax.swing.JPanel {
         }, (int) jSpinner1.getValue(), (int) jSpinner1.getValue());
     }//GEN-LAST:event_jSpinner1StateChanged
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+            jButton2.setText("RUN");
+            return;
+        }
+
+        jButton2.setText("PAUSE");
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                try {
+                    evaluator.next();
+                } catch (VMRuntimeException ex) {
+                    Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }, (int) jSpinner1.getValue(), (int) jSpinner1.getValue());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            evaluator.next();
+        } catch (VMRuntimeException ex) {
+            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private Timer timer;
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane bytecode;
-    private javax.swing.JPanel cells;
     private javax.swing.JEditorPane code;
     private javax.swing.JTextArea console;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JPanel memoryTape;
+    private javax.swing.JPanel rightPanel;
     // End of variables declaration//GEN-END:variables
 
     public File getFile() {
@@ -291,7 +288,7 @@ public class Simulator extends javax.swing.JPanel {
     }
 
     public JPanel getjPanel1() {
-        return jPanel1;
+        return rightPanel;
     }
 
     public JScrollPane getjScrollPane1() {

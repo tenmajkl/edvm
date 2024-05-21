@@ -4,40 +4,35 @@
  */
 package cz.gvid.kripac.edvm.ui;
 
-import cz.gvid.kripac.edvm.ui.machine.SimulatorMemory;
-import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTextField;
 
 /**
  *
- * @author misa
+ * @author majkel
  */
-public class Memory extends javax.swing.JPanel {
-    
-    private ArrayList<Cell> memoryCells = new ArrayList<Cell>();
-    private int page = 0;
-    
+public class Registers extends javax.swing.JPanel {
+
     private Simulator simulator;
+    private ArrayList<Cell> registerCells = new ArrayList<Cell>();
+    private int page = 0;
+
     
     /**
-     * Creates new form Memory
+     * Creates new form Registers
      */
-    public Memory(Simulator simulator) {
+    public Registers(Simulator simulator) {
         this.simulator = simulator;
         initComponents();
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 4; i++) {
             var cell = new Cell();
             cell.setId(i);
-            memoryCells.add(cell);
+            registerCells.add(cell);
             cells.add(cell);
         }
 
         left.setEnabled(false);
-        
     }
 
     /**
@@ -49,7 +44,7 @@ public class Memory extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         left = new javax.swing.JButton();
         cells = new javax.swing.JPanel();
         right = new javax.swing.JButton();
@@ -62,7 +57,7 @@ public class Memory extends javax.swing.JPanel {
             }
         });
 
-        cells.setLayout(new java.awt.GridLayout(1, 0));
+        cells.setLayout(new java.awt.GridLayout());
 
         right.setText(">");
         right.setBorder(null);
@@ -72,21 +67,21 @@ public class Memory extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(left)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cells, javax.swing.GroupLayout.PREFERRED_SIZE, 1254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cells, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(right)
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(left, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(cells, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(right, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -96,23 +91,24 @@ public class Memory extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1324, Short.MAX_VALUE)
+            .addGap(0, 372, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 312, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(93, 93, 93)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(93, 93, 93)))
+                    .addGap(99, 99, 99)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(99, 99, 99)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
     private void leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftActionPerformed
         page--;
         update();
@@ -124,7 +120,6 @@ public class Memory extends javax.swing.JPanel {
         if (page == 0) {
             left.setEnabled(false);
         }
-
     }//GEN-LAST:event_leftActionPerformed
 
     private void rightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightActionPerformed
@@ -139,26 +134,22 @@ public class Memory extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_rightActionPerformed
 
+    
     private void update() {
-        for (int i = 0; i < 16; i++) {
-            var cell = memoryCells.get(i);
+        for (int i = 0; i < 4; i++) {
+            var cell = registerCells.get(i);
             var addr = page * 16 + i;
-            cell.clear()
-                .setId(addr)
+            cell.setId(addr)
                 .setValue(simulator.getMemory().getValue(addr))
+                .clear()
             ;
         }
     }
     
-    public void highlightCell(int cell) {
-        page = (int) Math.ceil(((double) cell + 1) / 16) - 1;
-        update();
-        memoryCells.get(cell - (page) * 16).highlight();
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cells;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JButton left;
     private javax.swing.JButton right;
     // End of variables declaration//GEN-END:variables
