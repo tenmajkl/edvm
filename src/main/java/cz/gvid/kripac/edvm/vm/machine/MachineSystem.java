@@ -13,7 +13,7 @@ public class MachineSystem implements System {
      * {@inheritDoc}
      */
     @Override
-    public int call(int id, int in) throws VMRuntimeException {
+    public int call(int id, int in, int out) throws VMRuntimeException {
         // TODO remove switch
         switch (id) {
             case 0b0000:

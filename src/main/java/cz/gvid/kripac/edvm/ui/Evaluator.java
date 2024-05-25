@@ -21,6 +21,7 @@ public class Evaluator {
     private InstructionEvaluator instructions;
     private List<Integer> bytecode;
     private Simulator simulator;
+    private int errorAt = -1;
     
     public Evaluator(Map<Integer, String> asm, Map<Integer, String> tags, InstructionEvaluator instructions, List<Integer> bytecode, Simulator simulator) {
         this.asm = asm;
@@ -34,9 +35,16 @@ public class Evaluator {
         String result = "";
         for (int line = 0; line < asm.size(); line++) {
             if (tags.containsKey(line - 1)) {
-                result += "  " + tags.get(line - 1) + "\n";
+                result += "&nbsp;&nbsp;" + tags.get(line - 1) + "<br>";
             }
-            result += (line == current ? "> " : "  ") + asm.get(line) + "\n";
+            
+            var text = (line == current ? "> " : "&nbsp;&nbsp;") + asm.get(line);          
+            
+            if (line == errorAt) {
+                text = "<span style=\"color: red;\">" + text + "</span>";
+            }
+            
+            result += text + "<br>";
         }
         
         return result;
@@ -46,23 +54,44 @@ public class Evaluator {
         String result = "";
         for (int line = 0; line < bytecode.size(); line++) {
             if (tags.containsKey(line - 1)) {
-                result += "\n";
+                result += "<br>";
             }
-            result += (line == current ? "> " : "  ") + String.format(
+            var text = (line == current ? "> " : "&nbsp;&nbsp;") + String.format(
                     "%16s", 
                     Integer.toBinaryString(bytecode.get(line))
-            ).replace(" ","0") + "\n";
+                    ).replace(" ","0");
+            
+            if (line == errorAt) {
+                text = "<span style=\"color: red;\">" + text + "</span>";
+            }
+            
+            result += text + "<br>";
         }
         
         return result;  
     }
     
-    public void next() throws VMRuntimeException {
+    public void next() {
         if (!instructions.canEvalNext()) {
             return;
         }
         
-        instructions.evalNext();
+        if (simulator.isWaiting()) {
+            return;
+        }
+        
+        simulator.getMemoryTape().update();
+        simulator.getRegistersTape().update();
+        
+        try {
+            instructions.evalNext();
+        } catch (VMRuntimeException e) {
+            errorAt = instructions.getPointer();
+            simulator.getConsole().setText(
+                    simulator.getConsole().getText()
+                    + "\n" + e.getMessage()
+            );
+        }
         simulator.getCode().setText(getCode(instructions.getPointer()));
         simulator.getBytecode().setText(getByteCode(instructions.getPointer()));
     }

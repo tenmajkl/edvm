@@ -51,8 +51,8 @@ public class Compiler {
         this.addInstruction("and", 7, new Numeric(4), new Numeric(4), new Numeric(4));
         this.addInstruction("jmp", 8, new Address());
         this.addInstruction("jzr", 9, new Numeric(4), new Address());
-        this.addInstruction("set", 10, new Numeric(8), new Numeric(4));
-        this.addInstruction("get", 11, new Numeric(8), new Numeric(4));
+        this.addInstruction("set", 10, new Numeric(4), new Numeric(4));
+        this.addInstruction("get", 11, new Numeric(4), new Numeric(4));
         this.addInstruction("sys", 12, new Numeric(4), new Numeric(4), new Numeric(4));
         this.addInstruction("equ", 13, new Numeric(4), new Numeric(4), new Numeric(4));
         this.addInstruction("gt",  14, new Numeric(4), new Numeric(4), new Numeric(4));

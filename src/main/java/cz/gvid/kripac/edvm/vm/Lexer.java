@@ -13,6 +13,9 @@ import cz.gvid.kripac.edvm.vm.exception.InstructionException;
  */
 public class Lexer {
 
+    private final int STATE_S = 0;
+    private final int STATE_A = 1;
+    
     /**
      * Reads input stream into list of integer instruction representation
      *
@@ -22,14 +25,26 @@ public class Lexer {
     */
     public ArrayList<Integer> lex(InputStream in) throws InstructionException {
         int curent = 0;
+        int buffer = 0;
         var result = new ArrayList<Integer>();
+        int state = STATE_S;
+        
         try {
-            while ((curent = in.read()) != -1) {
-                int rest = in.read();
-                if (rest == -1) {
-                    throw new InstructionException("Instruction is not complete!");
+            while ((curent = in.read()) != -1) {                
+                switch (state) {
+                    case STATE_S:
+                        buffer = curent;
+                        state = STATE_A;
+                        break;
+                    case STATE_A:
+                        result.add((curent << 8) + buffer);
+                        state = STATE_S;
+                        break;
                 }
-                result.add((curent << 8) + rest);
+            }
+            
+            if (state == 0) {
+                throw new InstructionException("Instruction is not complete!");           
             }
         } catch(IOException e) {
             throw new InstructionException(e.getMessage());

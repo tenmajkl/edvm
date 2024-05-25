@@ -14,7 +14,7 @@ import cz.gvid.kripac.edvm.vm.instructions.Set;
 public class SetParser implements InstructionParser {
     @Override
     public Instruction parse(int arguments) throws InstructionException {
-        var args = ArgumentParser.parse(Arrays.asList(8, 4), arguments);
+        var args = ArgumentParser.parse(Arrays.asList(4, 4), arguments);
         return new Set(args.get(0), args.get(1));
     }
 }

@@ -24,7 +24,7 @@ public class Get implements Instruction {
      */
     @Override
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
-        registers.put(register, memory.get(address));
+        registers.put(register, memory.get(registers.get(address)));
     } 
     
     public int getAddress() {

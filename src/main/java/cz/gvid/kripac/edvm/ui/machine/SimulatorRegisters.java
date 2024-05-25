@@ -4,17 +4,26 @@
  */
 package cz.gvid.kripac.edvm.ui.machine;
 
-import cz.gvid.kripac.edvm.vm.contracts.Registers;
+import cz.gvid.kripac.edvm.ui.Simulator;
+import cz.gvid.kripac.edvm.ui.contracts.Tapeable;
 import cz.gvid.kripac.edvm.vm.exception.VMRuntimeException;
 
 /**
  *
  * @author majkel
  */
-public class SimulatorRegisters implements Registers {
+public class SimulatorRegisters implements cz.gvid.kripac.edvm.vm.contracts.Registers, Tapeable {
 
-    private int[] registers = new int[16];
+    private int[] tape = new int[16];
+    
+    private Simulator simulator;
 
+    public SimulatorRegisters(Simulator simulator) {
+        this.simulator = simulator;
+    }
+
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -23,15 +32,17 @@ public class SimulatorRegisters implements Registers {
         if (address > 16) {
             throw new VMRuntimeException("Address out of bounds! Register " + address + " does not exist.");
         }
+        
+        simulator.getRegistersTape().highlightRead(address);
 
-        return registers[address];
+        return tape[address];
     }
   
     /**
      * {@inheritDoc}
      */
     @Override
-    public Registers put(int address, int value) throws VMRuntimeException {
+    public SimulatorRegisters put(int address, int value) throws VMRuntimeException {
         if (address > 16) {
             throw new VMRuntimeException("Address out of bounds! Register " + address + " does not exist.");
         }
@@ -39,11 +50,21 @@ public class SimulatorRegisters implements Registers {
         value = value % 256; // integer overflow
 
         if (value < 0) {
-            this.registers[address] = 256 + value; // integer underflow
+            tape[address] = 256 + value; // integer underflow
             return this;
         }
 
-        this.registers[address] = value;
+        tape[address] = value;
+        
+        simulator.getRegistersTape().highlightWrite(address);
+        
         return this;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public int getValue(int address) {
+        return tape[address];
     }
 }

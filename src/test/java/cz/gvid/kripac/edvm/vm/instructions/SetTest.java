@@ -19,9 +19,9 @@ public class SetTest {
     public void parsing() {
         assertDoesNotThrow(() -> {
             var parser = new SetParser(); 
-            var set = parser.parse(0b011110101000);
+            var set = parser.parse(0b110010000000);
             assertTrue(set instanceof Set);
-            assertEquals(122, ((Set) set).getAddress());
+            assertEquals(12, ((Set) set).getAddress());
             assertEquals(8, ((Set) set).getRegister());
         });
     }
@@ -32,9 +32,10 @@ public class SetTest {
             var registers = new MachineRegisters();
             var memory = new MachineMemory();
             registers.put(0, 37);
-            var set = new Set(0, 0);
+            registers.put(1, 2);
+            var set = new Set(1, 0);
             set.eval(memory, registers, null, null);
-            assertEquals(37, memory.get(0));
+            assertEquals(37, memory.get(2));
         });
     }
 }

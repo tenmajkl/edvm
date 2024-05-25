@@ -20,10 +20,10 @@ public class GetTest {
     public void parsing() {
         assertDoesNotThrow(() -> {
             var parser = new GetParser();
-            var get = parser.parse(0b100010100000);
+            var get = parser.parse(0b111100110000);
             assertTrue(get instanceof Get);
-            assertEquals(138, ((Get) get).getAddress());
-            assertEquals(0, ((Get) get).getRegister());
+            assertEquals(15, ((Get) get).getAddress());
+            assertEquals(3, ((Get) get).getRegister());
         });
     }
 
@@ -37,6 +37,7 @@ public class GetTest {
             get.eval(memory, registers, null, null);
             assertEquals(255, registers.get(0));
 
+            registers.put(1, 1);
             get = new Get(1, 0);
             get.eval(memory, registers, null, null);
             assertEquals(0, registers.get(0));

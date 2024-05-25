@@ -28,7 +28,7 @@ public class Sys implements Instruction {
     public void eval(Memory memory, Registers registers, System system, InstructionPointer pointer) throws VMRuntimeException {
         registers.put(
                 outputReg, 
-                system.call(id, registers.get(inputReg))
+                system.call(id, registers.get(inputReg), outputReg)
         );
     }
 

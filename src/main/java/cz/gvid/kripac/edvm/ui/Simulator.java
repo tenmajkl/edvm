@@ -37,6 +37,9 @@ public class Simulator extends javax.swing.JPanel {
     private SimulatorRegisters registers;
     private SimulatorSystem system;
     
+    private Tape memoryTape;
+    private Tape registersTape;
+    
     /**
      * Creates new Simulator panel
      */
@@ -44,14 +47,14 @@ public class Simulator extends javax.swing.JPanel {
         initComponents();
         
         file = input;
-        var memoryComp = new Memory(this);
-        var registerComp = new Registers(this);
-        this.memoryTape.add(memoryComp);
-        this.rightPanel.add(registerComp);
+        memory = new SimulatorMemory(this);
+        registers = new SimulatorRegisters(this);
+        system = new SimulatorSystem(this);
         
-        memory = new SimulatorMemory(memoryComp);
-        registers = new SimulatorRegisters();
-        system = new SimulatorSystem(this.getConsole());
+        memoryTape = new Tape(memory, 16, 16);
+        registersTape = new Tape(registers, 4, 4);
+        memoryPanel.add(memoryTape);
+        registersPanel.add(registersTape);
         
         try (var in = new FileInputStream(file)){
             evaluator = new AsmCompiler().toEvaluator(in, this, 
@@ -70,8 +73,8 @@ public class Simulator extends javax.swing.JPanel {
             Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
         } 
         
-        BoundedRangeModel model = jScrollPane1.getVerticalScrollBar().getModel();
-        jScrollPane2.getVerticalScrollBar().setModel( model );
+        BoundedRangeModel model = codeScroll.getVerticalScrollBar().getModel();
+        bytecodeScroll.getVerticalScrollBar().setModel( model );
     }
 
     /**
@@ -82,119 +85,207 @@ public class Simulator extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        codePanel = new javax.swing.JPanel();
+        codeScroll = new javax.swing.JScrollPane();
         code = new javax.swing.JEditorPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        bytecodeScroll = new javax.swing.JScrollPane();
         bytecode = new javax.swing.JEditorPane();
+        jLabel2 = new javax.swing.JLabel();
         rightPanel = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        buttons = new javax.swing.JPanel();
+        nextButton = new javax.swing.JButton();
+        runButton = new javax.swing.JButton();
+        tickSpeed = new javax.swing.JSpinner();
+        consoleScroll = new javax.swing.JScrollPane();
         console = new javax.swing.JTextArea();
-        memoryTape = new javax.swing.JPanel();
+        registersPanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        memoryPanel = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(40, 40, 40));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(146, 131, 116)));
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 5));
 
-        jPanel4.setLayout(new java.awt.GridLayout());
-
+        code.setEditable(false);
         code.setBorder(null);
+        code.setContentType("text/html"); // NOI18N
         code.setFont(new java.awt.Font("Source Code Pro", 0, 13)); // NOI18N
         code.setCaretColor(new java.awt.Color(146, 131, 116));
         code.setFocusTraversalPolicyProvider(true);
         code.setPreferredSize(new java.awt.Dimension(500, 250));
         code.setRequestFocusEnabled(false);
-        jScrollPane1.setViewportView(code);
+        codeScroll.setViewportView(code);
         code.getAccessibleContext().setAccessibleName("");
 
-        jPanel4.add(jScrollPane1);
+        jLabel1.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        jLabel1.setText("Code");
+
+        javax.swing.GroupLayout codePanelLayout = new javax.swing.GroupLayout(codePanel);
+        codePanel.setLayout(codePanelLayout);
+        codePanelLayout.setHorizontalGroup(
+            codePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(codeScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(codePanelLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 269, Short.MAX_VALUE))
+        );
+        codePanelLayout.setVerticalGroup(
+            codePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(codePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(codeScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel4.add(codePanel);
 
         bytecode.setBorder(null);
+        bytecode.setContentType("text/html"); // NOI18N
         bytecode.setFont(new java.awt.Font("SauceCodePro NF", 0, 13)); // NOI18N
         bytecode.setCaretColor(new java.awt.Color(146, 131, 116));
         bytecode.setFocusTraversalPolicyProvider(true);
         bytecode.setPreferredSize(new java.awt.Dimension(500, 250));
         bytecode.setRequestFocusEnabled(false);
-        jScrollPane2.setViewportView(bytecode);
+        bytecodeScroll.setViewportView(bytecode);
 
-        jPanel4.add(jScrollPane2);
+        jLabel2.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        jLabel2.setText("Bytecode");
 
-        jPanel2.setLayout(new java.awt.GridLayout(1, 0, 10, 5));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bytecodeScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(0, 237, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bytecodeScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
-        jButton1.setText("NEXT");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel4.add(jPanel1);
+
+        buttons.setLayout(new java.awt.GridLayout(1, 0, 10, 5));
+
+        nextButton.setText("NEXT");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                nextButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1);
+        buttons.add(nextButton);
 
-        jButton2.setText("RUN");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        runButton.setText("RUN");
+        runButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                runButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2);
+        buttons.add(runButton);
 
-        jSpinner1.setToolTipText("Slock speed (ms)");
-        jSpinner1.setAutoscrolls(true);
-        jSpinner1.setValue(1000);
-        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+        tickSpeed.setToolTipText("Slock speed (ms)");
+        tickSpeed.setAutoscrolls(true);
+        tickSpeed.setValue(1000);
+        tickSpeed.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSpinner1StateChanged(evt);
+                tickSpeedStateChanged(evt);
             }
         });
-        jPanel2.add(jSpinner1);
+        buttons.add(tickSpeed);
 
         console.setEditable(false);
         console.setColumns(20);
         console.setFont(new java.awt.Font("Source Code Pro", 0, 13)); // NOI18N
         console.setRows(5);
-        jScrollPane3.setViewportView(console);
+        console.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                consoleKeyTyped(evt);
+            }
+        });
+        consoleScroll.setViewportView(console);
+
+        registersPanel.setBorder(new com.formdev.flatlaf.ui.FlatBorder());
+        registersPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel3.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        jLabel3.setText("Console");
+
+        jLabel4.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        jLabel4.setText("Registers");
 
         javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
         rightPanel.setLayout(rightPanelLayout);
         rightPanelLayout.setHorizontalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
-            .addComponent(jScrollPane3)
+            .addComponent(buttons, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+            .addComponent(consoleScroll)
+            .addComponent(registersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(rightPanelLayout.createSequentialGroup()
+                .addGroup(rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         rightPanelLayout.setVerticalGroup(
             rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rightPanelLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(buttons, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(consoleScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(registersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel4.add(rightPanel);
 
-        memoryTape.setLayout(new java.awt.GridLayout(1, 0));
+        memoryPanel.setBorder(new com.formdev.flatlaf.ui.FlatBorder());
+        memoryPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel5.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        jLabel5.setText("Memory");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
-            .addComponent(memoryTape, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(memoryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel5)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(memoryTape, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(memoryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
+    private void tickSpeedStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tickSpeedStateChanged
         if (timer == null) {
             return;
         }
@@ -203,64 +294,85 @@ public class Simulator extends javax.swing.JPanel {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                try {
-                    evaluator.next();
-                } catch (VMRuntimeException ex) {
-                    Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                evaluator.next();
             }
-        }, (int) jSpinner1.getValue(), (int) jSpinner1.getValue());
-    }//GEN-LAST:event_jSpinner1StateChanged
+        }, (int) tickSpeed.getValue(), (int) tickSpeed.getValue());
+    }//GEN-LAST:event_tickSpeedStateChanged
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
         if (timer != null) {
             timer.cancel();
             timer = null;
-            jButton2.setText("RUN");
+            runButton.setText("RUN");
             return;
         }
 
-        jButton2.setText("PAUSE");
+        runButton.setText("PAUSE");
 
         timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                try {
-                    evaluator.next();
-                } catch (VMRuntimeException ex) {
-                    Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                evaluator.next();
             }
-        }, (int) jSpinner1.getValue(), (int) jSpinner1.getValue());
-    }//GEN-LAST:event_jButton2ActionPerformed
+        }, (int) tickSpeed.getValue(), (int) tickSpeed.getValue());
+    }//GEN-LAST:event_runButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            evaluator.next();
-        } catch (VMRuntimeException ex) {
-            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        evaluator.next();
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void consoleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_consoleKeyTyped
+        if (outputRegister == -1) {
+            return;
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+        var key = evt.getKeyChar();
 
+        try {
+            registers.put(outputRegister, (int) key);
+        } catch (VMRuntimeException e) {
+            // this should not happen
+        }
+        outputRegister = -1;
+        console.setText(console.getText() + key);
+    }//GEN-LAST:event_consoleKeyTyped
+
+    private int outputRegister = -1;
+    
+    public void waitForKey(int outputRegister) {
+        this.outputRegister = outputRegister;
+    }
+    
+    public boolean isWaiting() {
+        return outputRegister != -1;
+    }
+    
     private Timer timer;
     
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel buttons;
     private javax.swing.JEditorPane bytecode;
+    private javax.swing.JScrollPane bytecodeScroll;
     private javax.swing.JEditorPane code;
+    private javax.swing.JPanel codePanel;
+    private javax.swing.JScrollPane codeScroll;
     private javax.swing.JTextArea console;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane consoleScroll;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JPanel memoryTape;
+    private javax.swing.JPanel memoryPanel;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JPanel registersPanel;
     private javax.swing.JPanel rightPanel;
+    private javax.swing.JButton runButton;
+    private javax.swing.JSpinner tickSpeed;
     // End of variables declaration//GEN-END:variables
 
     public File getFile() {
@@ -284,23 +396,23 @@ public class Simulator extends javax.swing.JPanel {
     }
 
     public JButton getjButton1() {
-        return jButton1;
+        return nextButton;
     }
 
     public JPanel getjPanel1() {
-        return rightPanel;
+        return codePanel;
     }
 
     public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
+        return codeScroll;
     }
 
     public JScrollPane getjScrollPane2() {
-        return jScrollPane2;
+        return bytecodeScroll;
     }
 
     public JScrollPane getjScrollPane3() {
-        return jScrollPane3;
+        return consoleScroll;
     }
 
     public SimulatorMemory getMemory() {
@@ -313,6 +425,14 @@ public class Simulator extends javax.swing.JPanel {
 
     public SimulatorSystem getSystem() {
         return system;
+    }
+
+    public Tape getMemoryTape() {
+        return memoryTape;
+    }
+
+    public Tape getRegistersTape() {
+        return registersTape;
     }
 
 
