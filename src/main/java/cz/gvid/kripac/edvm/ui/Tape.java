@@ -97,30 +97,19 @@ public class Tape extends javax.swing.JPanel {
     private void leftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftActionPerformed
         page--;
         update();
-
-        if (page == pages - 2) {
-            right.setEnabled(true);
-        }
-
-        if (page == 0) {
-            left.setEnabled(false);
-        }
-
     }//GEN-LAST:event_leftActionPerformed
 
     private void rightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightActionPerformed
         page++;
         update();
-        if (page == pages - 1) {
-            right.setEnabled(false);
-        }
-
-        if (page == 1) {
-            left.setEnabled(true);
-        }
     }//GEN-LAST:event_rightActionPerformed
 
     public void update() {
+       
+        right.setEnabled(page != pages - 1);
+
+        left.setEnabled(page != 0);
+        
         for (int i = 0; i < size; i++) {
             var cell = tapeCells.get(i);
             var addr = page * pages + i;
