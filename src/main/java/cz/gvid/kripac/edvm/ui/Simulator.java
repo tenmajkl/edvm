@@ -68,11 +68,13 @@ public class Simulator extends javax.swing.JPanel {
             
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open file", JOptionPane.ERROR_MESSAGE);
+            System.exit(-1);                      
         } catch (AssemblerInstructionException ex) {
             JOptionPane.showMessageDialog(this, ex.show(), "Error", JOptionPane.ERROR_MESSAGE);    
             System.exit(-1);
         } catch (InstructionException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(-1);
         } 
         
         BoundedRangeModel model = codeScroll.getVerticalScrollBar().getModel();
