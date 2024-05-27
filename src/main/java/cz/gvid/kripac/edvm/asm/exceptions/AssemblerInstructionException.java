@@ -21,4 +21,8 @@ public class AssemblerInstructionException extends Exception {
         this.line = line;
         return this;
     }
+
+    public String show() {
+        return getMessage() + " at line " + (getLine() + 1) + ".";
+    }
 }

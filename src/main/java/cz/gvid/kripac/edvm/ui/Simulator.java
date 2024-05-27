@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -66,11 +67,12 @@ public class Simulator extends javax.swing.JPanel {
             bytecode.setText(evaluator.getByteCode(-1));
             
         } catch (IOException e) {
-        
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Unable to open file", JOptionPane.ERROR_MESSAGE);
         } catch (AssemblerInstructionException ex) {
-            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.show(), "Error", JOptionPane.ERROR_MESSAGE);    
+            System.exit(-1);
         } catch (InstructionException ex) {
-            Logger.getLogger(Simulator.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } 
         
         BoundedRangeModel model = codeScroll.getVerticalScrollBar().getModel();
