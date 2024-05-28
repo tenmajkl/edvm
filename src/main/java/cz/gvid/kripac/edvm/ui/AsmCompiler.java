@@ -21,6 +21,19 @@ import java.util.Scanner;
  * @author majkel
  */
 public class AsmCompiler extends Compiler {
+
+    /**
+     * Compiles given input file into evaluator.
+     *
+     * @param input stream of asm 
+     * @param simulator ui instance  
+     * @param memory memory instance for ui 
+     * @param registers registers instance for ui 
+     * @param system system isntance for ui 
+     * @return new evaluator instance
+     * @throws AssemblerInstructionException if there is a compiler error 
+     * @throws InstructionException when there is an error while parsing compiled bytecode (should not happen)
+     */
     public Evaluator toEvaluator(InputStream input, Simulator simulator, SimulatorMemory memory, SimulatorRegisters registers, SimulatorSystem system) throws AssemblerInstructionException, InstructionException  {
         var scanner = new Scanner(input);
         var asm = new HashMap<Integer, String>();
@@ -39,7 +52,7 @@ public class AsmCompiler extends Compiler {
         }
         
         var parser = new Parser();
-
+        scanner.close();
         return new Evaluator(
                 asm, 
                 tags,

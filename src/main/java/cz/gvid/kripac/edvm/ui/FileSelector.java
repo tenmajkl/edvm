@@ -14,6 +14,9 @@ import javax.swing.JFileChooser;
  */
 public class FileSelector extends javax.swing.JPanel {
 
+    /**
+     * Parent frame
+     */
     private UI ui;
     
     /**

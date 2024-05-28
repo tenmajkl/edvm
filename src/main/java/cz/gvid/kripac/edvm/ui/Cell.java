@@ -7,7 +7,7 @@ package cz.gvid.kripac.edvm.ui;
 import java.awt.Color;
 
 /**
- *
+ * Represents tape cell
  * @author majkel
  */
 public class Cell extends javax.swing.JPanel {
@@ -53,26 +53,43 @@ public class Cell extends javax.swing.JPanel {
         add(id, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Sets id of current cell 
+     * @param id cell id 
+     * @return self 
+     */
     public Cell setId(int id) {
         this.id.setText(id + ":");
         return this;
     }
     
+    /**
+     * Sets cell value 
+     * @param value of cell 
+     * @return self 
+     */
     public Cell setValue(int value) {
         this.value.setText(value + "");
         return this;
     }
     
+    /** 
+     * Sets background color of cell 
+     * @param color of cell 
+     * @return self
+     */
     public Cell highlight(Color color) {
         this.setBackground(color);
         this.jPanel1.setBackground(color);
         return this;
     }
     
+    /**
+     * Clears background color
+     * @return self
+     */
     public Cell clear()  {
-        this.setBackground(Color.DARK_GRAY);
-        this.jPanel1.setBackground(Color.DARK_GRAY);
-        return this;
+        return this.highlight(Color.DARK_GRAY);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

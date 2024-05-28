@@ -30,7 +30,12 @@ public class Evaluator {
         this.bytecode = bytecode;
         this.simulator = simulator;
     }
-    
+   
+    /**
+     * Returns text of ASM code that can be shown in simulator.
+     * @param current line of code which is highlighted
+     * @return ASM code
+     */
     public String getCode(int current) {
         String result = "";
         for (int line = 0; line < asm.size(); line++) {
@@ -49,7 +54,12 @@ public class Evaluator {
         
         return result;
     }
-    
+   
+    /**
+     * Returns text of binary code that can be shown in simulator. 
+     * @param current line of code which is highlighted
+     * @return binary code
+     */
     public String getByteCode(int current) {
         String result = "";
         for (int line = 0; line < bytecode.size(); line++) {
@@ -70,7 +80,10 @@ public class Evaluator {
         
         return result;  
     }
-    
+   
+    /**
+     * Evaluates next instruction.
+     */
     public void next() {
         if (!instructions.canEvalNext()) {
             return;

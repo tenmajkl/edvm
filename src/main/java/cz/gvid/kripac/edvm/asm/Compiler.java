@@ -1,5 +1,6 @@
 package cz.gvid.kripac.edvm.asm;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -147,15 +148,13 @@ public class Compiler {
      * @throws AssemblerInstructionException if there is any syntax error inside input line
      * @return compiled list of integer instructions
      */
-    public List<Integer> compile(Scanner input) throws AssemblerInstructionException {
-        while (input.hasNextLine()) {
-            this.compileLine(input.nextLine());
+    public List<Integer> compile(InputStream input) throws AssemblerInstructionException {
+        Scanner in = new Scanner(input);
+        while (in.hasNextLine()) {
+            this.compileLine(in.nextLine());
             this.line++;
         }
-
+        in.close();
         return this.result;
     }
-    
-    
-    
 }

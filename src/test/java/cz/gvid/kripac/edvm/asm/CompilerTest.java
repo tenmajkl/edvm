@@ -6,10 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +53,7 @@ public class CompilerTest {
     @Test
     public void compile() {
         assertDoesNotThrow(() -> {
-            var stream = new Scanner(new FileReader("test.esm"));
+            var stream = new FileInputStream("test.esm");
             var comp = new Compiler();
             assertEquals(Arrays.asList(
                 0b0000000001100001,
