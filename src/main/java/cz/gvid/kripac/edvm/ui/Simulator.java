@@ -87,7 +87,6 @@ public class Simulator extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel4 = new javax.swing.JPanel();
         codePanel = new javax.swing.JPanel();
@@ -211,6 +210,7 @@ public class Simulator extends javax.swing.JPanel {
         console.setEditable(false);
         console.setColumns(20);
         console.setFont(new java.awt.Font("Source Code Pro", 0, 13)); // NOI18N
+        console.setLineWrap(true);
         console.setRows(5);
         console.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {

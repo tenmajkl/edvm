@@ -57,7 +57,7 @@ public class FileSelector extends javax.swing.JPanel {
 
     private void selectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileActionPerformed
         // TODO add your handling code here:
-        final JFileChooser fc = new JFileChooser();
+        final JFileChooser fc = new JFileChooser(".");
         fc.showOpenDialog(this);
         var file = fc.getSelectedFile();
         ui.runSimulator(file);

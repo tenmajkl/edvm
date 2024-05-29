@@ -13,4 +13,4 @@ sys 1 1 8
 srv 2 0
 add 4 5 4
 equ 4 3 7
-jzr 7 loop
+jmp loop
