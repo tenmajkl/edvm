@@ -84,7 +84,6 @@ public class Compiler {
         }
 
         this.addresses.setAddress(matcher.group(1), this.line);
-        this.line--; // we need to skip this line basicaly
 
         return true;
     }
@@ -107,6 +106,8 @@ public class Compiler {
         }
 
         this.result.add(instruction.compile(Arrays.asList(tokens), addresses));
+
+        this.line++;
 
         return true;
     }
@@ -135,7 +136,6 @@ public class Compiler {
         Scanner in = new Scanner(input);
         while (in.hasNextLine()) {
             this.compileLine(in.nextLine());
-            this.line++;
         }
         in.close();
         return this.result;

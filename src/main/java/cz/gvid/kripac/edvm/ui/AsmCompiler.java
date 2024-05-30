@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cz.gvid.kripac.edvm.ui;
 
 import cz.gvid.kripac.edvm.asm.Compiler;
@@ -18,7 +14,6 @@ import java.util.Scanner;
 
 /**
  * Wrap around default ASM compiler allowing us to generate inputs for Evaluator
- * @author majkel
  */
 public class AsmCompiler extends Compiler {
 

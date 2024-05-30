@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package cz.gvid.kripac.edvm;
 
 //import java.io.FileNotFoundException;

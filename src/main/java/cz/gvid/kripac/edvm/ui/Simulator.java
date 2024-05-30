@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package cz.gvid.kripac.edvm.ui;
 
 import cz.gvid.kripac.edvm.asm.exceptions.AssemblerInstructionException;
@@ -24,8 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- *
- * @author majkel
+ * Simulator panel
  */
 public class Simulator extends javax.swing.JPanel {
 

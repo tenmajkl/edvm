@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package cz.gvid.kripac.edvm.ui;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
 import javax.swing.JFileChooser;
 
 /**
- *
- * @author majkel
+ * Panel for selecting file
  */
 public class FileSelector extends javax.swing.JPanel {
 
