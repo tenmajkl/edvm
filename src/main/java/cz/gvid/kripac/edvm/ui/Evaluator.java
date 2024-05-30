@@ -10,14 +10,14 @@ import java.util.Map;
  */
 public class Evaluator {
     
-    private Map<Integer, String> asm;
+    private List<String> asm;
     private Map<Integer, String> tags;
     private InstructionEvaluator instructions;
     private List<Integer> bytecode;
     private Simulator simulator;
     private int errorAt = -1;
     
-    public Evaluator(Map<Integer, String> asm, Map<Integer, String> tags, InstructionEvaluator instructions, List<Integer> bytecode, Simulator simulator) {
+    public Evaluator(List<String> asm, Map<Integer, String> tags, InstructionEvaluator instructions, List<Integer> bytecode, Simulator simulator) {
         this.asm = asm;
         this.tags = tags;
         this.instructions = instructions;

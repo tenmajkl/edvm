@@ -9,6 +9,7 @@ import cz.gvid.kripac.edvm.vm.InstructionEvaluator;
 import cz.gvid.kripac.edvm.vm.Parser;
 import cz.gvid.kripac.edvm.vm.exception.InstructionException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -31,7 +32,7 @@ public class AsmCompiler extends Compiler {
      */
     public Evaluator toEvaluator(InputStream input, Simulator simulator, SimulatorMemory memory, SimulatorRegisters registers, SimulatorSystem system) throws AssemblerInstructionException, InstructionException  {
         var scanner = new Scanner(input);
-        var asm = new HashMap<Integer, String>();
+        var asm = new ArrayList<String>();
         var tags = new HashMap<Integer, String>();
         String line;
         
@@ -41,9 +42,8 @@ public class AsmCompiler extends Compiler {
                 tags.put(this.line, line);
             } else {
                 this.compileInstruction(line);                
-                asm.put(this.line, line);
-            }
-            this.line++;
+                asm.add(line);
+            }            
         }
         
         var parser = new Parser();
