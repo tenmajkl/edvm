@@ -37,13 +37,13 @@ public class Lexer {
                         state = STATE_A;
                         break;
                     case STATE_A:
-                        result.add((curent << 8) + buffer);
+                        result.add((buffer << 8) + curent);
                         state = STATE_S;
                         break;
                 }
             }
             
-            if (state == 0) {
+            if (state != STATE_S) {
                 throw new InstructionException("Instruction is not complete!");           
             }
         } catch(IOException e) {

@@ -241,6 +241,8 @@
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Slock speed (ms)"/>
                     <Property name="autoscrolls" type="boolean" value="true"/>
+                    <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+                    <Property name="name" type="java.lang.String" value="" noResource="true"/>
                     <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="1000" type="code"/>
                     </Property>

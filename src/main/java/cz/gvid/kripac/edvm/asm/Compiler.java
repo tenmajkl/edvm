@@ -24,10 +24,10 @@ public class Compiler {
     /**
      * Contains compilers for all instructions
      */
-    private HashMap<String, Entry<Integer, List<Argument>>> instructions = new HashMap<String, Entry<Integer, List<Argument>>>();
+    private HashMap<String, Instruction> instructions = new HashMap<String, Instruction>();
 
     /**
-     * Contains all tags and its addresses
+     * Contains all tags and their addresses
      */
     protected Addresses addresses = new Addresses();
     /**
@@ -42,6 +42,7 @@ public class Compiler {
     protected ArrayList<Integer> result = new ArrayList<Integer>();
 
     public Compiler() {
+        // TODO create class 
         this.addInstruction("srv", 0, new Numeric(4), new Numeric(8));
         this.addInstruction("add", 1, new Numeric(4), new Numeric(4), new Numeric(4));
         this.addInstruction("sub", 2, new Numeric(4), new Numeric(4), new Numeric(4));
@@ -67,7 +68,7 @@ public class Compiler {
      * @param arguments argument signature
      */
     private void addInstruction(String name, int id, Argument... arguments) {
-        instructions.put(name, new SimpleEntry<Integer, List<Argument>>(id, Arrays.asList(arguments)));
+        instructions.put(name, new Instruction(name, id, Arrays.asList(arguments)));
     }
 
     /**
@@ -96,7 +97,7 @@ public class Compiler {
      */
     public boolean compileInstruction(String line) throws AssemblerInstructionException {
         var tokens = line.split("\\s+");
-        Entry<Integer, List<Argument>> instruction;
+        Instruction instruction;
         if (Pattern.matches("^\\s+$", line)) {
             return true;
         }
@@ -105,25 +106,7 @@ public class Compiler {
             throw new AssemblerInstructionException("Unknown instruction " + tokens[0]);
         }
 
-        var args = instruction.getValue();
-
-        var result = new ArrayList<Integer>();
-
-        var pattern = new ArrayList<Integer>();
-
-        int index = 0;
-        try {
-            for (; index < args.size(); index++) {
-                result.add(
-                        args.get(index).compile(tokens[index + 1], this.addresses)
-                );
-                pattern.add(args.get(index).getSize());
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new AssemblerInstructionException("Missing argument " + index);
-        }
-
-        this.result.add(BytecodeGenerator.convert(instruction.getKey(), result, pattern));
+        this.result.add(instruction.compile(Arrays.asList(tokens), addresses));
 
         return true;
     }

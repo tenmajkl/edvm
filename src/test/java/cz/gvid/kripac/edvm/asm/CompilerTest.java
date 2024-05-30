@@ -53,7 +53,7 @@ public class CompilerTest {
     @Test
     public void compile() {
         assertDoesNotThrow(() -> {
-            var stream = new FileInputStream("test.esm");
+            var stream = new FileInputStream("example/aaa.esm");
             var comp = new Compiler();
             assertEquals(Arrays.asList(
                 0b0000000001100001,

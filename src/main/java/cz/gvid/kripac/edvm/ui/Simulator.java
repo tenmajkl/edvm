@@ -199,6 +199,8 @@ public class Simulator extends javax.swing.JPanel {
 
         tickSpeed.setToolTipText("Slock speed (ms)");
         tickSpeed.setAutoscrolls(true);
+        tickSpeed.setInheritsPopupMenu(true);
+        tickSpeed.setName(""); // NOI18N
         tickSpeed.setValue(1000);
         tickSpeed.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
